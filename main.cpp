@@ -89,12 +89,12 @@ int main(){
     // 4. En la otra los del Mar Rojo Angela
     int fechaCode;
     char puntoEntrada;
-    string archivo, fecha, ubi, hora, pais, paisABuscar, paisaux;
+    string archivo, archivoR, fecha, ubi, hora, pais, paisABuscar, paisaux;
     Entrada *objAuxiliar; //Crear variable que guarde el objeto fuera del ciclo
-    vector<string> listaPaises;
+    LinkedList<Entrada> listaPaises;
     vector<string>::iterator inicioBuscado, finBuscado;
     vector<Entrada> mivect;
-
+    ofstream salidaSuez;
     ifstream archivoSuez;
 
     cin >> archivo;
@@ -107,27 +107,21 @@ int main(){
         pais = countryFromUbi(ubi); //Extraer los los primeros carácteres del UBI y guardarlos como el país de origen 
         fechaCode = date2Int(fecha); //Convertir fechas a enteros para permitir la comparación
         objAuxiliar = new Entrada(fecha, fechaCode, hora, puntoEntrada, ubi, pais); //Igualas la variable al objAuxiliar
-        mivect.push_back(*objAuxiliar);  //push_back() es el metodo que guarda los valores en el vector
+        listaPaises.addLast(*objAuxiliar);  //push_back() es el metodo que guarda los valores en el vector
     }
 
     // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
     // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
 
     // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
-    string archivoSalida;
+    cin >> archivoR;
 
-    ofstream salidaSuez;
+    salidaSuez.open(archivoR);
 
-    cin >> archivoSalida;
-
-    salidaSuez.open(archivoSalida);
-
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < listaPaises.getSize(); i++)
     {
-        salidaSuez << mivect[i];
+        salidaSuez << listaPaises.get(i);
     }
-
-    
 
     // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
 
