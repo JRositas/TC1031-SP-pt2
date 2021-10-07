@@ -29,6 +29,9 @@ class Entrada
     // imprimir 
     void mostrar();
 
+    //Escritura
+    friend ostream& operator<<(ostream& os, const Entrada &r);
+
     private:
       string fecha;
       int fechaCode;
@@ -63,4 +66,7 @@ void Entrada::mostrar()
   cout << fecha << " " << hora << " " << puntoEntrada << " " << ubi << endl;
 }
 
+ostream& operator<<(ostream& os, const Entrada &r){
+    os << r.ubi << " " << r.fecha << " " << r.hora << " " << r.puntoEntrada << endl;
+}
 #endif // Entrada_h 
