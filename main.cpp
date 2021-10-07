@@ -83,52 +83,55 @@ string countryFromUbi(string ubi){
 }
 
 int main(){
-    
     int fechaCode;
     char puntoEntrada;
     string archivoM, archivoR, archivo, fecha, ubi, hora, pais, paisABuscar, paisaux;
     ifstream archivoSuez;
     ofstream suezM, suezR;
     Entrada *objAuxiliar; //Crear variable que guarde el objeto fuera del ciclo
-
-    // 2. Crear 2 listas encadenadas Angela
     LinkedList<Entrada> llMarMed;
     LinkedList<Entrada> llMarRojo;
 
-    // 1. Solicitar el nombre del archivo de entrada Angela
-    cin >> " Ingresar archivo: " >> archivo;
+    cin >> archivo;
 
     archivoSuez.open(archivo);
 
-    
-    // 3. En una almacenar los datos del Mar Mediterraneo Angela
-    while (archivoSuez >> fecha >> puntoEntrada >> ubi){
+    //Almacenar entradas como objetos en un vector
+    while (archivoSuez >> fecha >> hora >> puntoEntrada >> ubi)
+    {
+        pais = countryFromUbi(ubi); //Extraer los los primeros carácteres del UBI y guardarlos como el país de origen 
+        fechaCode = date2Int(fecha); //Convertir fechas a enteros para permitir la comparación
+        objAuxiliar = new Entrada(fecha, fechaCode, hora, puntoEntrada, ubi, pais); //Igualas la variable al objAuxiliar
+        if(puntoEntrada == 'M'){
+            llMarMed.addLast(*objAuxiliar);  //push_back() es el metodo que guarda los valores en el vector
+        }
+        if(puntoEntrada == 'R'){
+            llMarRojo.addLast(*objAuxiliar);
+        }
     }
-    // 4. En la otra los del Mar Rojo Angela
 
     // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
     // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
 
     // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
-        string archivoR, archivoM;
+    cin >> archivoR;
 
-        cin >> archivoR;
+    suezR.open(archivoR);
 
-        suezR.open(archivoR);
+    for (int i = 0; i < llMarRojo.getSize(); i++){
+        suezR << llMarRojo.get(i);
+    }
 
-        for (int i = 0; i < llMarRojo.getSize(); i++){
-            suezR << llMarRojo.get(i);
-        }
+    cin >> archivoM;
 
-        cin >> archivoM;
+    suezM.open(archivoM);
 
-        suezM.open(archivoM);
+    for(int i = 0; i < llMarMed.getSize(); i++){
+        suezM << llMarMed.get(i);
+    }
 
-        for(int i = 0; i < llMarMed.getSize(); i++){
-            suezM << llMarMed.get(i);
-        }
     // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
-    
+
 
     // Investigacion y reflexion individual
 }
