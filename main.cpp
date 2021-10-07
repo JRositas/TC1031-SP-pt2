@@ -83,19 +83,14 @@ string countryFromUbi(string ubi){
 }
 
 int main(){
-    // 1. Solicitar el nombre del archivo de entrada Angela
-    // 2. Crear 2 listas encadenadas Angela
-    // 3. En una almacenar los datos del Mar Mediterraneo Angela 
-    // 4. En la otra los del Mar Rojo Angela
     int fechaCode;
     char puntoEntrada;
-    string archivo, archivoR, fecha, ubi, hora, pais, paisABuscar, paisaux;
-    Entrada *objAuxiliar; //Crear variable que guarde el objeto fuera del ciclo
-    LinkedList<Entrada> listaPaises;
-    vector<string>::iterator inicioBuscado, finBuscado;
-    vector<Entrada> mivect;
-    ofstream salidaSuez;
+    string archivoM, archivoR, archivo, fecha, ubi, hora, pais, paisABuscar, paisaux;
     ifstream archivoSuez;
+    ofstream suezM, suezR;
+    Entrada *objAuxiliar; //Crear variable que guarde el objeto fuera del ciclo
+    LinkedList<Entrada> llMarMed;
+    LinkedList<Entrada> llMarRojo;
 
     cin >> archivo;
 
@@ -107,7 +102,12 @@ int main(){
         pais = countryFromUbi(ubi); //Extraer los los primeros carácteres del UBI y guardarlos como el país de origen 
         fechaCode = date2Int(fecha); //Convertir fechas a enteros para permitir la comparación
         objAuxiliar = new Entrada(fecha, fechaCode, hora, puntoEntrada, ubi, pais); //Igualas la variable al objAuxiliar
-        listaPaises.addLast(*objAuxiliar);  //push_back() es el metodo que guarda los valores en el vector
+        if(puntoEntrada == 'M'){
+            llMarMed.addLast(*objAuxiliar);  //push_back() es el metodo que guarda los valores en el vector
+        }
+        if(puntoEntrada == 'R'){
+            llMarRojo.addLast(*objAuxiliar);
+        }
     }
 
     // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
@@ -116,11 +116,18 @@ int main(){
     // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
     cin >> archivoR;
 
-    salidaSuez.open(archivoR);
+    suezR.open(archivoR);
 
-    for (int i = 0; i < listaPaises.getSize(); i++)
-    {
-        salidaSuez << listaPaises.get(i);
+    for (int i = 0; i < llMarRojo.getSize(); i++){
+        suezR << llMarRojo.get(i);
+    }
+
+    cin >> archivoM;
+
+    suezM.open(archivoM);
+
+    for(int i = 0; i < llMarMed.getSize(); i++){
+        suezM << llMarMed.get(i);
     }
 
     // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
