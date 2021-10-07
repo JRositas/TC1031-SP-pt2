@@ -106,7 +106,7 @@ int main(){
     {
       if ( puntoEntrada == "M" )
       {
-        archivoM = new suezM(fecha >> puntoEntada >> ubi); // suezM?
+        archivoM = new Entrada(fecha >> puntoEntada >> ubi); // suezM?
       }
     }
     // 4. En la otra los del Mar Rojo Angela
@@ -114,7 +114,7 @@ int main(){
     {
       if ( puntoEntrada == "R" )
       {
-        archivoR = new suezR(fecha >> puntoEntada >> ubi); // suezR?
+        archivoR = new Entrada(fecha >> puntoEntada >> ubi); // suezR?
       }
     }
 
