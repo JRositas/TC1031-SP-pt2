@@ -110,23 +110,23 @@ int main(){
     // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
 
     // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
-        string archivoR, archivoM;
+    string archivoR, archivoM;
 
-        cin >> archivoR;
+    cin >> archivoR;
 
-        suezR.open(archivoR);
+    suezR.open(archivoR);
 
-        for (int i = 0; i < llMarRojo.getSize(); i++){
-            suezR << llMarRojo.get(i);
-        }
+    for (int i = 0; i < llMarRojo.getSize(); i++){
+        suezR << llMarRojo.get(i);
+    }
 
-        cin >> archivoM;
+    cin >> archivoM;
 
-        suezM.open(archivoM);
+    suezM.open(archivoM);
 
-        for(int i = 0; i < llMarMed.getSize(); i++){
-            suezM << llMarMed.get(i);
-        }
+    for(int i = 0; i < llMarMed.getSize(); i++){
+        suezM << llMarMed.get(i);
+    }
     // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
     
 
