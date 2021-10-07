@@ -85,7 +85,7 @@ string countryFromUbi(string ubi){
 int main(){
     
     int fechaCode;
-    char puntoEntrada;
+    string /*char */ puntoEntrada;
     string archivoM, archivoR, archivo, fecha, ubi, hora, pais, paisABuscar, paisaux;
     ifstream archivoSuez;
     ofstream suezM, suezR;
@@ -102,9 +102,21 @@ int main(){
 
     
     // 3. En una almacenar los datos del Mar Mediterraneo Angela
-    while (archivoSuez >> fecha >> puntoEntrada >> ubi){
+    while (archivoSuez >> fecha >> puntoEntrada >> ubi)
+    {
+      if ( puntoEntrada == "M" )
+      {
+        archivoM = new suezM(fecha >> puntoEntada >> ubi); // suezM?
+      }
     }
     // 4. En la otra los del Mar Rojo Angela
+    while (archivoSuez >> fecha >> puntoEntrada >> ubi)
+    {
+      if ( puntoEntrada == "R" )
+      {
+        archivoR = new suezR(fecha >> puntoEntada >> ubi); // suezR?
+      }
+    }
 
     // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
     // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
