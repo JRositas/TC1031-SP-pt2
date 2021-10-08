@@ -21,6 +21,7 @@ class LinkedList{
         void print();
         void reverse();
         void shift(int n);
+        void sort();
         bool operator==(const LinkedList<T> &otra);
         void operator+=(const LinkedList<T> &otra);
         void operator=(const LinkedList<T> &otra);
@@ -204,6 +205,25 @@ void LinkedList<T>::print(){
     while (curr != nullptr){
         cout << curr->getdata() << endl;
         curr = curr->getNext();
+    }
+}
+
+template <class T>
+void LinkedList<T>::sort(){
+    if(size > 1){
+        Node<T> *i = head;
+        while(i->getNext() != nullptr){
+            Node<T> *j = i->getNext();
+            while (j != nullptr){
+              if(i->getData() > j->getData()){
+                  T aux = i->getData();
+                  i->setData(j->getData());
+                  j->setData(aux);
+              }
+              j = j->getNext();
+            }
+            i = i->getNext();
+        }
     }
 }
 
