@@ -1,12 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <string>
-
 using namespace std;
 
 #include "LinkedList.h"
-#include "Entrada.h"
+
+struct entrada{
+  string fecha;
+  int fechaCode;
+  string hora;
+  char puntoEntrada;
+  string ubi;
+  string pais;
+};
+
+// Complejidad O(1)
+void printE(entrada E){
+  cout << E.fecha << " " << E.hora << " " << E.puntoEntrada << " " << E.ubi << endl;
+}
 
 // Complejidad O(n) Lineal, dependiente del largo de "date"
 int date2Int(string date){
@@ -61,17 +71,6 @@ int date2Int(string date){
     return dateCode;
 }
 
-// Complejidad: 0(1) Revisa si los UBI de las entradas son iguales, si lo son, compara las fechas, si nó compara los UBI
-bool comparaDate( Entrada x, Entrada y) // compara fecha por fecha
-{
-  if (x.getUbi() == y.getUbi()) // checar si hay empate, si hay empate ordena por fecha
-  {
-    return x.getFechaCode() < y.getFechaCode(); // cual de las dos fechas es más grande
-  }
-  return x.getUbi() < y.getUbi();
-}
-
-
 //Complejidad: O(1) Regresa los primeros tres caractéres de un código UBI ingresado
 string countryFromUbi(string ubi){
     string pais;
@@ -82,65 +81,58 @@ string countryFromUbi(string ubi){
     return pais;
 }
 
+//Complejidad O(1)
+bool compDate(entrada x, entrada y) // compara fecha por fecha
+{
+  if (x.ubi == y.ubi) // checar si hay empate, si hay empate ordena por fecha
+  {
+    return x.fechaCode < y.fechaCode; // cual de las dos fechas es más grande
+  }
+  return x.ubi < y.ubi;
+}
+
 int main(){
-    
-    int fechaCode;
-    string /*char */ puntoEntrada;
-    string archivoM, archivoR, archivo, fecha, ubi, hora, pais, paisABuscar, paisaux;
-    ifstream archivoSuez;
-    ofstream suezM, suezR;
-    Entrada *objAuxiliar; //Crear variable que guarde el objeto fuera del ciclo
+  char puntoEntrada;
+  string archivo, fecha, ubi, hora, pais;
+  int fechaCode;
 
-    // 2. Crear 2 listas encadenadas Angela
-    LinkedList<Entrada> llMarMed;
-    LinkedList<Entrada> llMarRojo;
+  // Solicitar el nombre del archivo de entrada
+  ifstream archivoSuez;
+  cin >> archivo;
+  archivoSuez.open(archivo);
 
-    // 1. Solicitar el nombre del archivo de entrada Angela
-    cin >> " Ingresar archivo: " >> archivo;
+  // Crear 2 listas encadenadas
+  LinkedList<entrada> llMarMed;
+  LinkedList<entrada> llMarRojo;
 
-    archivoSuez.open(archivo);
-
-    
-    // 3. En una almacenar los datos del Mar Mediterraneo Angela
-    while (archivoSuez >> fecha >> puntoEntrada >> ubi)
+  // En una almacenar los datos del Mar Mediterraneo
+  while (archivoSuez >> fecha >> hora >> puntoEntrada >> ubi)
     {
-      if ( puntoEntrada == "M" )
-      {
-        archivoM = new Entrada(fecha >> puntoEntada >> ubi); // suezM?
-      }
-    }
-    // 4. En la otra los del Mar Rojo Angela
-    while (archivoSuez >> fecha >> puntoEntrada >> ubi)
-    {
-      if ( puntoEntrada == "R" )
-      {
-        archivoR = new Entrada(fecha >> puntoEntada >> ubi); // suezR?
-      }
-    }
+      pais = countryFromUbi(ubi); //Extraer los los primeros carácteres del UBI y guardarlos como el país de origen 
+      fechaCode = date2Int(fecha); //Convertir fechas a enteros para permitir la comparación
 
-    // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
-    // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
+      entrada objAuxiliar; //Crear objetto auxiliar
+      objAuxiliar.fecha = fecha;
+      objAuxiliar.fechaCode = fechaCode;
+      objAuxiliar.hora = hora;
+      objAuxiliar.puntoEntrada = puntoEntrada;
+      objAuxiliar.ubi = ubi;
+      objAuxiliar.pais = pais;
 
-    // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
-    string archivoR, archivoM;
 
-    cin >> archivoR;
-
-    suezR.open(archivoR);
-
-    for (int i = 0; i < llMarRojo.getSize(); i++){
-        suezR << llMarRojo.get(i);
+      // Apendizarlo a una lista segun su entrada
+      (objAuxiliar.puntoEntrada == 'M') ? llMarMed.addLast(objAuxiliar) : llMarRojo.addLast(objAuxiliar);
     }
 
-    cin >> archivoM;
+  // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
 
-    suezM.open(archivoM);
+  // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
 
-    for(int i = 0; i < llMarMed.getSize(); i++){
-        suezM << llMarMed.get(i);
-    }
-    // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
-    
 
-    // Investigacion y reflexion individual
+  // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
+
+  // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
+
+
+  // Investigacion y reflexion individual
 }
