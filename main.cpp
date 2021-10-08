@@ -127,7 +127,9 @@ int main(){
       (objAuxiliar.puntoEntrada == 'M') ? llMarMed.addLast(objAuxiliar) : llMarRojo.addLast(objAuxiliar);
     }
 
-  // 5. Ordenar ascendentemente ambas listas por Ubi + fecha Rositas
+  // Ordenar ascendentemente ambas listas por Ubi + fecha
+  llMarMed.sort();
+  llMarRojo.sort();
 
   // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
 
