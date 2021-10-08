@@ -94,15 +94,29 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
   return x.ubi < y.ubi;
 }
 
+// Complejidad O(N)
+void searchPais(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string pais){
+  for(int i=0; i<llMarMed.getSize(); i++){
+    if(llMarMed.get(i).pais==pais){
+      printE(llMarMed.get(i));
+    }
+  }
+  for(int i=0; i<llMarRojo.getSize(); i++){
+    if(llMarRojo.get(i).pais==pais){
+      printE(llMarRojo.get(i));
+    }
+  }
+}
+
 int main(){
   char puntoEntrada;
-  string archivo, fecha, ubi, hora, pais;
+  string archivo, fecha, ubi, hora, pais, sPais;
   int fechaCode;
 
   // Solicitar el nombre del archivo de entrada
   ifstream archivoSuez;
-  cin >> archivo;
-  archivoSuez.open(archivo);
+  //cin >> archivo;
+  archivoSuez.open("suez1.txt");
 
   // Crear 2 listas encadenadas
   LinkedList<entrada> llMarMed;
@@ -122,7 +136,6 @@ int main(){
       objAuxiliar.ubi = ubi;
       objAuxiliar.pais = pais;
 
-
       // Apendizarlo a una lista segun su entrada
       (objAuxiliar.puntoEntrada == 'M') ? llMarMed.addLast(objAuxiliar) : llMarRojo.addLast(objAuxiliar);
     }
@@ -131,8 +144,9 @@ int main(){
   llMarMed.sort();
   llMarRojo.sort();
 
-  // 7. Solocitar los 3 caracteres de UBI a buscar Rositas
-
+  // Solocitar los 3 caracteres de UBI a buscar
+  cin >> sPais;
+  searchPais(llMarMed, llMarRojo, sPais);
 
   // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
 
