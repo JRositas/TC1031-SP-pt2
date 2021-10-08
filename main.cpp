@@ -11,6 +11,9 @@ struct entrada{
   char puntoEntrada;
   string ubi;
   string pais;
+  bool operator > (const entrada &otro) const{
+    return (ubi == otro.ubi) ? (fechaCode > otro.fechaCode) : (ubi.compare(otro.ubi) > 0);
+  }
 };
 
 // Complejidad O(1)
