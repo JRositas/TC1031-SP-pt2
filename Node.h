@@ -3,7 +3,7 @@ class Node{
     public:
         Node(T data);
         Node(T data, Node<T> *next);
-        T getdata();
+        T getData();
         Node<T>* getNext();
         void setData(T data);
         void setNext(Node<T> *next);
@@ -25,7 +25,7 @@ Node<T>::Node(T data, Node<T> *next){
 }
 
 template <class T>
-T Node<T>::getdata(){
+T Node<T>::getData(){
     return data;
 }
 

@@ -5,20 +5,26 @@ using namespace std;
 #include "LinkedList.h"
 
 struct entrada{
-  string fecha;
-  int fechaCode;
-  string hora;
-  char puntoEntrada;
-  string ubi;
-  string pais;
-  bool operator > (const entrada &otro) const{
-    return (ubi == otro.ubi) ? (fechaCode > otro.fechaCode) : (ubi.compare(otro.ubi) > 0);
-  }
+    string fecha;
+    int fechaCode;
+    string hora;
+    char puntoEntrada;
+    string ubi;
+    string pais;
+
+    bool operator > (const entrada &otro) const{
+        return (ubi == otro.ubi) ? (fechaCode > otro.fechaCode) : (ubi.compare(otro.ubi) > 0);
+    }
 };
 
 // Complejidad O(1)
-void printE(entrada E){
-  cout << E.fecha << " " << E.hora << " " << E.puntoEntrada << " " << E.ubi << endl;
+void printE(entrada e){
+    cout << e.fecha << " " << e.hora << " " << e.puntoEntrada << " " << e.ubi << endl;
+}
+
+// Complejidad O(1)
+entrada& operator <<(ostream& os, const entrada &e){
+    os << e.ubi << " " << e.fecha << " " << e.hora << " " << e.puntoEntrada << endl;
 }
 
 // Complejidad O(n) Lineal, dependiente del largo de "date"
@@ -87,43 +93,43 @@ string countryFromUbi(string ubi){
 //Complejidad O(1)
 bool compDate(entrada x, entrada y) // compara fecha por fecha
 {
-  if (x.ubi == y.ubi) // checar si hay empate, si hay empate ordena por fecha
-  {
-    return x.fechaCode < y.fechaCode; // cual de las dos fechas es más grande
-  }
-  return x.ubi < y.ubi;
+    if (x.ubi == y.ubi) // checar si hay empate, si hay empate ordena por fecha
+    {
+        return x.fechaCode < y.fechaCode; // cual de las dos fechas es más grande
+    }
+    return x.ubi < y.ubi;
 }
 
 // Complejidad O(N)
 void searchPais(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string pais){
-  for(int i=0; i<llMarMed.getSize(); i++){
-    if(llMarMed.get(i).pais==pais){
-      printE(llMarMed.get(i));
+    for(int i=0; i<llMarMed.getSize(); i++){
+        if(llMarMed.get(i).pais==pais){
+        printE(llMarMed.get(i));
+        }
     }
-  }
-  for(int i=0; i<llMarRojo.getSize(); i++){
-    if(llMarRojo.get(i).pais==pais){
-      printE(llMarRojo.get(i));
+    for(int i=0; i<llMarRojo.getSize(); i++){
+        if(llMarRojo.get(i).pais==pais){
+        printE(llMarRojo.get(i));
+        }
     }
-  }
 }
 
 int main(){
-  char puntoEntrada;
-  string archivo, fecha, ubi, hora, pais, sPais;
-  int fechaCode;
+    char puntoEntrada;
+    string archivo, fecha, ubi, hora, pais, sPais, archivoM, archivoR;
+    int fechaCode;
+    ofstream salidaSuezM, salidaSuezR;
+    // Solicitar el nombre del archivo de entrada
+    ifstream archivoSuez;
+    cin >> archivo;
+    archivoSuez.open(archivo);
 
-  // Solicitar el nombre del archivo de entrada
-  ifstream archivoSuez;
-  //cin >> archivo;
-  archivoSuez.open("suez1.txt");
+    // Crear 2 listas encadenadas
+    LinkedList<entrada> llMarMed;
+    LinkedList<entrada> llMarRojo;
 
-  // Crear 2 listas encadenadas
-  LinkedList<entrada> llMarMed;
-  LinkedList<entrada> llMarRojo;
-
-  // En una almacenar los datos del Mar Mediterraneo
-  while (archivoSuez >> fecha >> hora >> puntoEntrada >> ubi)
+    // En una almacenar los datos del Mar Mediterraneo
+    while (archivoSuez >> fecha >> hora >> puntoEntrada >> ubi)
     {
       pais = countryFromUbi(ubi); //Extraer los los primeros carácteres del UBI y guardarlos como el país de origen 
       fechaCode = date2Int(fecha); //Convertir fechas a enteros para permitir la comparación
@@ -140,15 +146,30 @@ int main(){
       (objAuxiliar.puntoEntrada == 'M') ? llMarMed.addLast(objAuxiliar) : llMarRojo.addLast(objAuxiliar);
     }
 
-  // Ordenar ascendentemente ambas listas por Ubi + fecha
-  llMarMed.sort();
-  llMarRojo.sort();
+    // Ordenar ascendentemente ambas listas por Ubi + fecha
+    llMarMed.sort();
+    llMarRojo.sort();
 
-  // Solocitar los 3 caracteres de UBI a buscar
-  cin >> sPais;
-  searchPais(llMarMed, llMarRojo, sPais);
+    // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
+    cin >> archivoR;
 
-  // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
+    salidaSuezR.open(archivoR);
+
+    for (int i = 0; i < llMarRojo.getSize(); i++){
+        salidaSuezR << llMarRojo.get(i);
+    }
+
+    cin >> archivoM;
+
+    salidaSuezM.open(archivoM);
+
+    for(int i = 0; i < llMarMed.getSize(); i++){
+        salidaSuezM << llMarMed.get(i);
+    }
+
+    // Solocitar los 3 caracteres de UBI a buscar
+    cin >> sPais;
+    searchPais(llMarMed, llMarRojo, sPais);
 
   // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
 
