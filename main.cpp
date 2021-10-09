@@ -13,6 +13,10 @@ struct entrada{
   string pais;
 };
 
+entrada& operator <<(ostream& os, const entrada &e){
+    os << e.ubi << " " << e.fecha << " " << e.hora << " " << e.puntoEntrada << endl;
+}
+
 // Complejidad O(1)
 void printE(entrada E){
   cout << E.fecha << " " << E.hora << " " << E.puntoEntrada << " " << E.ubi << endl;
@@ -93,11 +97,13 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
 
 int main(){
   char puntoEntrada;
-  string archivo, fecha, ubi, hora, pais;
+  string archivo, fecha, ubi, hora, pais, archivoR, archivoM;
   int fechaCode;
 
   // Solicitar el nombre del archivo de entrada
   ifstream archivoSuez;
+  ofstream salidaSuez;
+
   cin >> archivo;
   archivoSuez.open(archivo);
 
@@ -130,7 +136,23 @@ int main(){
 
 
   // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
+    cin >> archivoR;
 
+    salidaSuez.open(archivoR);
+
+    for (int i = 0; i < llMarRojo.getSize(); i++){
+        salidaSuez << llMarRojo.get(i);
+    }
+
+    salidaSuez.close();
+
+    cin >> archivoM;
+
+    salidaSuez.open(archivoM);
+
+    for(int i = 0; i < llMarMed.getSize(); i++){
+        salidaSuez << llMarMed.get(i);
+    }
   // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
 
 
