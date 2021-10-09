@@ -1,3 +1,23 @@
+/*
+El programa tiene como propósito solicitar al usuario el archivo .txt,
+de tal manera que instantáneamente se guarden los datos en las dos LinkedLists hechas para Mar Rojo y Mar Mediterraneo,
+por lo que se va dar la instrucción que las dos listas se ordenen de manera ascendente por UBI + Fecha.
+Para que por último despliegue mes por mes con respecto a su distintiva serie por cada entrada que realizó.
+*/
+
+
+// Integrantes (Equipo 12) :
+// Daniel Evaristo Escalera Bonilla - A00831289
+// José Arnoldo Rositas Salinas - A00829760
+// Ángela Felicia Guajardo Olveda - A00829821
+
+// SP TC1031
+// 09 Oct 2021
+
+
+
+
+
 #include <iostream>
 #include <fstream>
 using namespace std;
