@@ -4,7 +4,7 @@ using namespace std;
 
 #include "LinkedList.h"
 
-struct entrada{
+struct entrada  {
     string fecha;
     int fechaCode;
     string hora;
@@ -42,6 +42,7 @@ int date2Int(string date){
     while(date[++i] != '-'){
         month += date[i];
     }
+
     int monthCode = 0;
     if(month == "jan"){
         monthCode = 1;
@@ -100,17 +101,86 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
     return x.ubi < y.ubi;
 }
 
-// Complejidad O(N)
-void searchPais(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string pais){
-    for(int i=0; i<llMarMed.getSize(); i++){
-        if(llMarMed.get(i).pais==pais){
-        printE(llMarMed.get(i));
+//Complejidad O(1)
+int subDate(int fechaInicial, int fechaFinal){
+    int dif, mesI, aI, mesF, aF;
+    mesI = fechaInicial/100%100;
+    aI = fechaInicial/10000;
+    mesF = fechaFinal/100%100;
+    aF = fechaFinal/10000;
+    dif = (mesI < mesF) ? mesF-mesI : mesI-mesF;
+    dif += (aF-aI) * 12;
+    return dif; 
+}
+
+void searchPais(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string paisB){
+    string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
+    int fechaInicioM, fechaInicioR, fechaFinalM, fechaFinalR, fechaFinal, fechaInicial, periodo, mes, a;
+    int i = 0, j = 0;
+    
+    while (i <= llMarMed.getSize()-1 && llMarMed.get(i).pais != paisB){
+        i++;
+    }
+    if(i > llMarMed.getSize()-1){
+        i--;
+    }
+    if(llMarMed.get(i).pais == paisB){
+        fechaInicioM = llMarMed.get(i).fechaCode;
+        while(i <= llMarMed.getSize()-1 && llMarMed.get(i).pais == paisB){
+            fechaFinalM = llMarMed.get(i).fechaCode;
+            i++;
         }
     }
-    for(int i=0; i<llMarRojo.getSize(); i++){
-        if(llMarRojo.get(i).pais==pais){
-        printE(llMarRojo.get(i));
+    else{
+        fechaInicioM = 0;
+        fechaFinalM = 0;
+    }
+    cout << subDate(fechaInicioM, fechaFinalM) << endl;
+
+    while (j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais != paisB){
+        j++;
+    }
+    if(j > llMarRojo.getSize()-1){
+        j--;
+    }
+    if(llMarRojo.get(j).pais == paisB){
+        fechaInicioR = llMarRojo.get(j).fechaCode;
+        while(j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais == paisB){
+            fechaFinalR = llMarRojo.get(j).fechaCode;
+            j++;
         }
+    }
+    else{
+        fechaInicioR = 0;
+        fechaFinalR = 0;
+    }
+    cout << subDate(fechaInicioR, fechaFinalR) << endl;
+
+    fechaFinal = (fechaFinalM > fechaFinalR) ? fechaFinalM : fechaFinalR;
+
+    if(fechaInicioM != 0 && fechaInicioR != 0){
+        fechaInicial = (fechaInicioM > fechaInicioR) ? fechaInicioR : fechaInicioM;
+        periodo = subDate(fechaInicial, fechaFinal);
+    }
+    else if(fechaInicioM != 0){
+        periodo = subDate(fechaInicioM, fechaFinal);
+    }
+    else if(fechaInicioR != 0){
+        periodo = subDate(fechaInicioR, fechaFinal);
+    }
+    else{
+        periodo = -1;
+        cout << "No se enconctro el ubi en los registros" << endl;
+    }
+
+    cout << periodo << endl;
+    cout << fechaInicioM << " " << fechaFinalM << endl;
+    cout << fechaInicioR << " " << fechaFinalR << endl;
+    cout << fechaInicial << " " << fechaFinal << endl;
+    if(periodo >= 0){
+        mes = fechaInicial/100%100;
+        a = fechaInicial/10000;
+        
     }
 }
 
