@@ -231,16 +231,21 @@ void LinkedList<T>::sort(){
 
 template <class T>
 vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
-    int mes, a, cant = 0;
+    int mes, a, mesF, aF, cant = 0;
+    cout << fechaFinal << endl;
     vector<int> ocurr;
     Node<T> *curr = head;
     if(size > 0){
         while (curr->getNext() != nullptr && curr->getData().pais != ubip){
             curr = curr->getNext();
         }
-        mes = curr->getData().mes;
-        a = curr->getData().a;
-        while (curr->getNext() != nullptr && curr->getData().pais == ubip){
+        mes = fechaInicio/100%100;
+        a = fechaInicio/10000;
+        mesF = fechaFinal/100%100;
+        aF = fechaFinal/10000;
+        while (mes != mesF || a != aF){
+            cout << curr->getData().fecha << " " << curr->getData().ubi << endl;
+            cout << mes << " " << a << " " << mesF << " " << aF << endl;
             if(curr->getData().mes == mes && curr->getData().a == a){
                 cant++;
                 curr = curr->getNext();
@@ -255,7 +260,9 @@ vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
                 cant = 0;
             }
         }
+        cout << "d" << endl;
         ocurr.push_back(cant);
+        cout << "d" << endl;
         return ocurr;
     }
 }
