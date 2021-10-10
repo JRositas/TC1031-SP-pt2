@@ -211,6 +211,7 @@ void LinkedList<T>::print(){
 }
 
 template <class T>
+// Complejidad O(n^2)
 void LinkedList<T>::sort(){
     if(size > 1){
         Node<T> *i = head;
