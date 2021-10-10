@@ -1,3 +1,4 @@
+#include <vector>
 #include "Node.h"
 
 template <class T>
@@ -22,6 +23,7 @@ class LinkedList{
         void reverse();
         void shift(int n);
         void sort();
+        vector<int> search(string ubi, int fechaInicio, int fechaFinal);
         bool operator==(const LinkedList<T> &otra);
         void operator+=(const LinkedList<T> &otra);
         void operator=(const LinkedList<T> &otra);
@@ -224,6 +226,37 @@ void LinkedList<T>::sort(){
             }
             i = i->getNext();
         }
+    }
+}
+
+template <class T>
+vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
+    int mes, a, cant = 0;
+    vector<int> ocurr;
+    Node<T> *curr = head;
+    if(size > 0){
+        while (curr->getNext() != nullptr && curr->getData().pais != ubip){
+            curr = curr->getNext();
+        }
+        mes = curr->getData().mes;
+        a = curr->getData().a;
+        while (curr->getNext() != nullptr && curr->getData().pais == ubip){
+            if(curr->getData().mes == mes && curr->getData().a == a){
+                cant++;
+                curr = curr->getNext();
+            }
+            else{
+                ocurr.push_back(cant);
+                mes++;
+                if (mes > 12){
+                    mes -= 12;
+                    a++;
+                }
+                cant = 0;
+            }
+        }
+        ocurr.push_back(cant);
+        return ocurr;
     }
 }
 
