@@ -228,7 +228,7 @@ int main(){
     llMarMed.sort();
     llMarRojo.sort();
 
-    // 6. Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
+    // Guardar las listas encadenadas en un txt con el nombre que de el usuario Dani
     cin >> archivoR;
 
     salidaSuezR.open(archivoR);
@@ -253,7 +253,7 @@ int main(){
     listaM = llMarMed.search(sPais, periodo[0], periodo[1]);
     listaR = llMarRojo.search(sPais, periodo[0], periodo[1]);
 
-  // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
+  // Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
     string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
     int mes, a;
 
@@ -268,6 +268,4 @@ int main(){
             a++;
         }
     }
-
-  // Investigacion y reflexion individual
 }
