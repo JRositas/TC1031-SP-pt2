@@ -36,6 +36,8 @@ struct entrada  {
     bool operator > (const entrada &otro) const{
         return (ubi == otro.ubi) ? (fechaCode > otro.fechaCode) : (ubi.compare(otro.ubi) > 0);
     }
+
+    friend ostream& operator <<(ostream& os, entrada &e);
 };
 
 // Complejidad O(1)
@@ -44,7 +46,7 @@ void printE(entrada e){
 }
 
 // Complejidad O(1)
-entrada& operator <<(ostream& os, const entrada &e){
+ostream& operator<<(ostream& os, const entrada &e){
     os << e.ubi << " " << e.fecha << " " << e.hora << " " << e.puntoEntrada << endl;
 }
 
@@ -124,7 +126,6 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
 
 
 vector<int> obtPeriod(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string paisB){
-    string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
     int fechaInicioM, fechaInicioR, fechaFinalM, fechaFinalR, fechaFinal, fechaInicial, mes, a;
     int i = 0, j = 0;
     vector<int> periodo;
@@ -244,10 +245,18 @@ int main(){
     vector<int> listaM, listaR, periodo;
     cin >> sPais;
     periodo = obtPeriod(llMarMed, llMarRojo, sPais);
-    
+    listaM = llMarMed.search(sPais, periodo[1], periodo[2]);
+    listaR = llMarRojo.search(sPais, periodo[1], periodo[2]);
 
   // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
-
+    string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
+    int mes, a;
+    
+    mes = periodo[1]/100%100;
+    a = periodo[1]/10000;
+    for(int i; i < listaR.size(); i++){
+        cout << meses[mes] << " " << a << " " << listaM[i] << " " << listaR[i] << endl;
+    }
 
   // Investigacion y reflexion individual
 }
