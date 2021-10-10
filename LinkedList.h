@@ -230,20 +230,24 @@ void LinkedList<T>::sort(){
 }
 
 template <class T>
+//Complejidad: Mejor Caso O(1) Peor Caso O(n2)
 vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
+    //Declaración de variables
     int mes, a, mesF, aF, cant = 0, i = 0, j = 0;
     vector<int> ocurr;
     Node<T> *curr = head;
-    if(size > 0){
-        while (curr->getNext() != nullptr && curr->getData().pais != ubip){
+
+    if(size > 0){ // Cuando la lista tenga datos 
+        while (curr->getNext() != nullptr && curr->getData().pais != ubip){ // Busqueda de el ubi 
             curr = curr->getNext();
         }
+        // Establecer las fechas en las que aparece el ubi
         mes = fechaInicio/100%100;
         a = fechaInicio/10000;
         mesF = fechaFinal/100%100;
         aF = fechaFinal/10000;
-        if(curr->getData().pais != ubip){
-            while(mes != mesF || a != aF){
+        if(curr->getData().pais != ubip){ // Si no se encontró el ubi.
+            while(mes != mesF || a != aF){ //Llenar el vector de ceros.
                 ocurr.push_back(0);
                 mes++;
                 if (mes > 12){
@@ -254,17 +258,38 @@ vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
             ocurr.push_back(0);
             return ocurr;
         }
-        while(curr->getNext()->getData().pais == ubip){
-            while (mes != mesF || a != aF){
-                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){
+        while(curr != nullptr && curr->getNext()->getData().pais == ubip){ // Mientras se encuentre el ubi
+            while (mes != mesF || a != aF && curr != nullptr){ // Mientras se esté dentro del rango
+                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){ // Mientras la fecha coincide se acumula el valor
                     cant++;
                     curr = curr->getNext();
                 }
-                else{
-                    if(i == 0){
+                else{ // Cuando la fecha ya no coincida se guarda el valor
+                    if(i == 0){ // Si es el primer tipo de Ubi se crea la posición en el vector 
                         ocurr.push_back(cant);
                     }
-                    else{
+                    else{ // Si es otro ubi se suma a la posición de la fecha
+                        ocurr[j] += cant;
+                    }
+                    j++;
+                    mes++;
+                    if (mes > 12){
+                        mes -= 12;
+                        a++;
+                    }
+                    cant = 0; //Reinicio del acumulador
+                }
+            }
+            while (mes == mesF && a == aF && curr != nullptr){ //Ultimo ciclo con la fecha final
+                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){ // Mientras la fecha coincide se acumula el valor
+                    cant++;
+                    curr = curr->getNext();
+                }
+                else{ // Cuando la fecha ya no coincida se guarda el valor
+                    if(i == 0){ // Si es el primer tipo de Ubi se crea la posición en el vector
+                        ocurr.push_back(cant);
+                    }
+                    else{ // Si es otro ubi se suma a la posición de la fecha
                         ocurr[j] += cant;
                     }
                     j++;
@@ -276,35 +301,17 @@ vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
                     cant = 0;
                 }
             }
-            while (mes == mesF && a == aF){
-                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){
-                    cant++;
-                    curr = curr->getNext();
-                }
-                else{
-                    if(i == 0){
-                        ocurr.push_back(cant);
-                    }
-                    else{
-                        ocurr[j] += cant;
-                    }
-                    j++;
-                    mes++;
-                    if (mes > 12){
-                        mes -= 12;
-                        a++;
-                    }
-                    cant = 0;
-                }
+            if(curr == nullptr){ //Ultimo almacenamiento en caso de encontrar las ultimas lineas de la lista
+                ocurr[j] += cant;
             }
-            mes = fechaInicio/100%100;
-            a = fechaInicio/10000;
-            i++;
-            j = 0;
+            // Se recorrió la fecha hasta el final, pero hay mas ubis con diferente número que inician de una fecha mas temprana
+            mes = fechaInicio/100%100; // Se reinicia la fecha
+            a = fechaInicio/10000; 
+            i++; // Se guarda una variable para indicar que ya hubo un ciclo
+            j = 0; // Se reinicia la variable que marca el índice
         }
-        return ocurr;
     }
+    return ocurr;
 }
 
-#include "LinkedList_2_1.h"
 #include "LinkedList_2_2.h"
