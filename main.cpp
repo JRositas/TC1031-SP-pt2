@@ -49,7 +49,7 @@ void printE(entrada e){
 
 // Complejidad O(1)
 ostream& operator<<(ostream& os, const entrada &e){
-    os << e.ubi << " " << e.fecha << " " << e.hora << " " << e.puntoEntrada << endl;
+    os << e.fecha << " " << e.hora << " " << e.puntoEntrada << " " << e.ubi << endl;
 }
 
 // Complejidad O(n) Lineal, dependiente del largo de "date"
@@ -200,7 +200,6 @@ int main(){
     ifstream archivoSuez;
     cin >> archivo;
     archivoSuez.open(archivo);
-
     // Crear 2 listas encadenadas
     LinkedList<entrada> llMarMed;
     LinkedList<entrada> llMarRojo;
