@@ -128,7 +128,7 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
 
 
 vector<int> obtPeriod(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string paisB){
-    int fechaInicioM, fechaInicioR, fechaFinalM, fechaFinalR, fechaFinal, fechaInicial, mes, a;
+    int fechaInicioM, fechaInicioR, fechaFinalM = 0, fechaFinalR = 0, fechaFinal, fechaInicial, mes, a;
     int i = 0, j = 0;
     vector<int> periodo;
     bool coincidenciasM = true, coincidenciasR = true;
@@ -146,7 +146,7 @@ vector<int> obtPeriod(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRoj
         else{
             fechaInicioM = llMarMed.get(i).fechaCode;
             while(i <= llMarMed.getSize()-1 && llMarMed.get(i).pais == paisB){
-                fechaFinalM = llMarMed.get(i).fechaCode;
+                fechaFinalM = (fechaFinalM < llMarMed.get(i).fechaCode) ? llMarMed.get(i).fechaCode : fechaFinalM;
                 i++;
             }
         }
@@ -161,7 +161,7 @@ vector<int> obtPeriod(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRoj
         else{
             fechaInicioR = llMarRojo.get(j).fechaCode;
             while(j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais == paisB){
-                fechaFinalR = llMarRojo.get(j).fechaCode;
+                fechaFinalR = (fechaFinalR < llMarRojo.get(j).fechaCode) ? llMarRojo.get(j).fechaCode : fechaFinalR;
                 j++;
             }
         }
