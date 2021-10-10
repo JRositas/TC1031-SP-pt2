@@ -1,3 +1,4 @@
+#include <vector>
 #include "Node.h"
 
 template <class T>
@@ -22,6 +23,7 @@ class LinkedList{
         void reverse();
         void shift(int n);
         void sort();
+        vector<int> search(string ubi, int fechaInicio, int fechaFinal);
         bool operator==(const LinkedList<T> &otra);
         void operator+=(const LinkedList<T> &otra);
         void operator=(const LinkedList<T> &otra);
@@ -224,6 +226,44 @@ void LinkedList<T>::sort(){
             }
             i = i->getNext();
         }
+    }
+}
+
+template <class T>
+vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
+    int mes, a, mesF, aF, cant = 0;
+    cout << fechaFinal << endl;
+    vector<int> ocurr;
+    Node<T> *curr = head;
+    if(size > 0){
+        while (curr->getNext() != nullptr && curr->getData().pais != ubip){
+            curr = curr->getNext();
+        }
+        mes = fechaInicio/100%100;
+        a = fechaInicio/10000;
+        mesF = fechaFinal/100%100;
+        aF = fechaFinal/10000;
+        while (mes != mesF || a != aF){
+            cout << curr->getData().fecha << " " << curr->getData().ubi << endl;
+            cout << mes << " " << a << " " << mesF << " " << aF << endl;
+            if(curr->getData().mes == mes && curr->getData().a == a){
+                cant++;
+                curr = curr->getNext();
+            }
+            else{
+                ocurr.push_back(cant);
+                mes++;
+                if (mes > 12){
+                    mes -= 12;
+                    a++;
+                }
+                cant = 0;
+            }
+        }
+        cout << "d" << endl;
+        ocurr.push_back(cant);
+        cout << "d" << endl;
+        return ocurr;
     }
 }
 

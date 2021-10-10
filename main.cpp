@@ -20,6 +20,7 @@ Para que por último despliegue mes por mes con respecto a su distintiva serie p
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 #include "LinkedList.h"
@@ -27,6 +28,8 @@ using namespace std;
 struct entrada  {
     string fecha;
     int fechaCode;
+    int mes;
+    int a;
     string hora;
     char puntoEntrada;
     string ubi;
@@ -35,6 +38,8 @@ struct entrada  {
     bool operator > (const entrada &otro) const{
         return (ubi == otro.ubi) ? (fechaCode > otro.fechaCode) : (ubi.compare(otro.ubi) > 0);
     }
+
+    friend ostream& operator <<(ostream& os, entrada &e);
 };
 
 // Complejidad O(1)
@@ -43,8 +48,8 @@ void printE(entrada e){
 }
 
 // Complejidad O(1)
-entrada& operator <<(ostream& os, const entrada &e){
-    os << e.ubi << " " << e.fecha << " " << e.hora << " " << e.puntoEntrada << endl;
+ostream& operator<<(ostream& os, const entrada &e){
+    os << e.fecha << " " << e.hora << " " << e.puntoEntrada << " " << e.ubi << endl;
 }
 
 // Complejidad O(n) Lineal, dependiente del largo de "date"
@@ -121,86 +126,68 @@ bool compDate(entrada x, entrada y) // compara fecha por fecha
     return x.ubi < y.ubi;
 }
 
-//Complejidad O(1)
-int subDate(int fechaInicial, int fechaFinal){
-    int dif, mesI, aI, mesF, aF;
-    mesI = fechaInicial/100%100;
-    aI = fechaInicial/10000;
-    mesF = fechaFinal/100%100;
-    aF = fechaFinal/10000;
-    dif = (mesI < mesF) ? mesF-mesI : mesI-mesF;
-    dif += (aF-aI) * 12;
-    return dif; 
-}
 
-void searchPais(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string paisB){
-    string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
-    int fechaInicioM, fechaInicioR, fechaFinalM, fechaFinalR, fechaFinal, fechaInicial, periodo, mes, a;
+vector<int> obtPeriod(LinkedList<entrada> llMarMed, LinkedList<entrada> llMarRojo, string paisB){
+    int fechaInicioM, fechaInicioR, fechaFinalM, fechaFinalR, fechaFinal, fechaInicial, mes, a;
     int i = 0, j = 0;
+    vector<int> periodo;
+    bool coincidenciasM = true, coincidenciasR = true;
     
-    while (i <= llMarMed.getSize()-1 && llMarMed.get(i).pais != paisB){
+    //Obtencion del periodo en el que el UBI coincide
+    if(llMarRojo.getSize() > 0 || llMarMed.getSize() > 0){
+        while (i <= llMarMed.getSize()-1 && llMarMed.get(i).pais != paisB){
         i++;
-    }
-    if(i > llMarMed.getSize()-1){
-        i--;
-    }
-    if(llMarMed.get(i).pais == paisB){
-        fechaInicioM = llMarMed.get(i).fechaCode;
-        while(i <= llMarMed.getSize()-1 && llMarMed.get(i).pais == paisB){
-            fechaFinalM = llMarMed.get(i).fechaCode;
-            i++;
         }
-    }
-    else{
-        fechaInicioM = 0;
-        fechaFinalM = 0;
-    }
-    cout << subDate(fechaInicioM, fechaFinalM) << endl;
-
-    while (j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais != paisB){
-        j++;
-    }
-    if(j > llMarRojo.getSize()-1){
-        j--;
-    }
-    if(llMarRojo.get(j).pais == paisB){
-        fechaInicioR = llMarRojo.get(j).fechaCode;
-        while(j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais == paisB){
-            fechaFinalR = llMarRojo.get(j).fechaCode;
+        if(i > llMarMed.getSize()-1){
+            coincidenciasM = false;
+            fechaInicioM = 0;
+            fechaFinalM = 0;
+        }
+        else{
+            fechaInicioM = llMarMed.get(i).fechaCode;
+            while(i <= llMarMed.getSize()-1 && llMarMed.get(i).pais == paisB){
+                fechaFinalM = llMarMed.get(i).fechaCode;
+                i++;
+            }
+        }
+        while (j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais != paisB){
             j++;
         }
-    }
-    else{
-        fechaInicioR = 0;
-        fechaFinalR = 0;
-    }
-    cout << subDate(fechaInicioR, fechaFinalR) << endl;
+        if(j > llMarRojo.getSize()-1){
+            coincidenciasR = false;
+            fechaInicioR = 0;
+            fechaFinalR = 0;
+        }
+        else{
+            fechaInicioR = llMarRojo.get(j).fechaCode;
+            while(j <= llMarRojo.getSize()-1 && llMarRojo.get(j).pais == paisB){
+                fechaFinalR = llMarRojo.get(j).fechaCode;
+                j++;
+            }
+        }
 
-    fechaFinal = (fechaFinalM > fechaFinalR) ? fechaFinalM : fechaFinalR;
+        if(coincidenciasR == true || coincidenciasM == true){
+            fechaFinal = (fechaFinalM > fechaFinalR) ? fechaFinalM : fechaFinalR;
+            if(fechaInicioM != 0 && fechaInicioR != 0){
+                fechaInicial = (fechaInicioM > fechaInicioR) ? fechaInicioR : fechaInicioM;
+            }
+            else if(fechaInicioM != 0){
+                fechaInicial = fechaInicioM;
+            }
+            else{
+                fechaInicial = fechaInicioR;
+            }
+        }
+        else{
+            fechaInicial = 0;
+            fechaFinal = 0;
+            cout << "No se enconctro el ubi en los registros" << endl;
+        }
 
-    if(fechaInicioM != 0 && fechaInicioR != 0){
-        fechaInicial = (fechaInicioM > fechaInicioR) ? fechaInicioR : fechaInicioM;
-        periodo = subDate(fechaInicial, fechaFinal);
-    }
-    else if(fechaInicioM != 0){
-        periodo = subDate(fechaInicioM, fechaFinal);
-    }
-    else if(fechaInicioR != 0){
-        periodo = subDate(fechaInicioR, fechaFinal);
-    }
-    else{
-        periodo = -1;
-        cout << "No se enconctro el ubi en los registros" << endl;
-    }
+        periodo.push_back(fechaInicial);
+        periodo.push_back(fechaFinal);
 
-    cout << periodo << endl;
-    cout << fechaInicioM << " " << fechaFinalM << endl;
-    cout << fechaInicioR << " " << fechaFinalR << endl;
-    cout << fechaInicial << " " << fechaFinal << endl;
-    if(periodo >= 0){
-        mes = fechaInicial/100%100;
-        a = fechaInicial/10000;
-        
+        return periodo;
     }
 }
 
@@ -213,7 +200,6 @@ int main(){
     ifstream archivoSuez;
     cin >> archivo;
     archivoSuez.open(archivo);
-
     // Crear 2 listas encadenadas
     LinkedList<entrada> llMarMed;
     LinkedList<entrada> llMarRojo;
@@ -227,6 +213,8 @@ int main(){
       entrada objAuxiliar; //Crear objetto auxiliar
       objAuxiliar.fecha = fecha;
       objAuxiliar.fechaCode = fechaCode;
+      objAuxiliar.mes = fechaCode/100%100;
+      objAuxiliar.a = fechaCode/10000;
       objAuxiliar.hora = hora;
       objAuxiliar.puntoEntrada = puntoEntrada;
       objAuxiliar.ubi = ubi;
@@ -258,11 +246,28 @@ int main(){
     }
 
     // Solocitar los 3 caracteres de UBI a buscar
+    vector<int> listaM, listaR, periodo;
+
     cin >> sPais;
-    searchPais(llMarMed, llMarRojo, sPais);
+    periodo = obtPeriod(llMarMed, llMarRojo, sPais);
+    listaM = llMarMed.search(sPais, periodo[0], periodo[1]);
+    listaR = llMarRojo.search(sPais, periodo[0], periodo[1]);
 
   // 8. Desplegar mes por mes las entradas por mar; mmm_aa_MM_MR Dani
+    string meses[12] = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dic"};
+    int mes, a;
 
+    mes = periodo[0]/100%100;
+    a = periodo[0]/10000;
+
+    for(int i = 0; i < listaR.size(); i++){
+        cout << meses[mes-1] << " " << a << " " << listaM[i] << " " << listaR[i] << endl;
+        mes++;
+        if (mes > 12){
+            mes -= 12;
+            a++;
+        }
+    }
 
   // Investigacion y reflexion individual
 }
