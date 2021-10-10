@@ -231,8 +231,7 @@ void LinkedList<T>::sort(){
 
 template <class T>
 vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
-    int mes, a, mesF, aF, cant = 0;
-    cout << fechaFinal << endl;
+    int mes, a, mesF, aF, cant = 0, i = 0, j = 0;
     vector<int> ocurr;
     Node<T> *curr = head;
     if(size > 0){
@@ -243,26 +242,66 @@ vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
         a = fechaInicio/10000;
         mesF = fechaFinal/100%100;
         aF = fechaFinal/10000;
-        while (mes != mesF || a != aF){
-            cout << curr->getData().fecha << " " << curr->getData().ubi << endl;
-            cout << mes << " " << a << " " << mesF << " " << aF << endl;
-            if(curr->getData().mes == mes && curr->getData().a == a){
-                cant++;
-                curr = curr->getNext();
-            }
-            else{
-                ocurr.push_back(cant);
+        if(curr->getData().pais != ubip){
+            while(mes != mesF || a != aF){
+                ocurr.push_back(0);
                 mes++;
                 if (mes > 12){
                     mes -= 12;
                     a++;
                 }
-                cant = 0;
             }
+            ocurr.push_back(0);
+            return ocurr;
         }
-        cout << "d" << endl;
-        ocurr.push_back(cant);
-        cout << "d" << endl;
+        while(curr->getNext()->getData().pais == ubip){
+            while (mes != mesF || a != aF){
+                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){
+                    cant++;
+                    curr = curr->getNext();
+                }
+                else{
+                    if(i == 0){
+                        ocurr.push_back(cant);
+                    }
+                    else{
+                        ocurr[j] += cant;
+                    }
+                    j++;
+                    mes++;
+                    if (mes > 12){
+                        mes -= 12;
+                        a++;
+                    }
+                    cant = 0;
+                }
+            }
+            while (mes == mesF && a == aF){
+                if(curr->getData().mes == mes && curr->getData().a == a && curr->getData().pais == ubip){
+                    cant++;
+                    curr = curr->getNext();
+                }
+                else{
+                    if(i == 0){
+                        ocurr.push_back(cant);
+                    }
+                    else{
+                        ocurr[j] += cant;
+                    }
+                    j++;
+                    mes++;
+                    if (mes > 12){
+                        mes -= 12;
+                        a++;
+                    }
+                    cant = 0;
+                }
+            }
+            mes = fechaInicio/100%100;
+            a = fechaInicio/10000;
+            i++;
+            j = 0;
+        }
         return ocurr;
     }
 }
