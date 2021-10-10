@@ -211,6 +211,7 @@ void LinkedList<T>::print(){
 }
 
 template <class T>
+// Complejidad: O(n^2)
 void LinkedList<T>::sort(){
     if(size > 1){
         Node<T> *i = head;
@@ -230,6 +231,7 @@ void LinkedList<T>::sort(){
 }
 
 template <class T>
+// Complejidad: O(n^2)
 vector<int> LinkedList<T>::search(string ubip, int fechaInicio, int fechaFinal){
     int mes, a, mesF, aF, cant = 0, i = 0, j = 0;
     vector<int> ocurr;
